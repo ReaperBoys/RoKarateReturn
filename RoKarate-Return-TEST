@@ -1,0 +1,91 @@
+-- Rayfield Loader
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "OP Autofarm",
+    LoadingTitle = "Loading...",
+    LoadingSubtitle = "By 5xscripts",
+    ConfigurationSaving = {Enabled = false}
+})
+
+-- Tabs
+local PushTab = Window:CreateTab("PushUps", 4483362458)
+local SitTab = Window:CreateTab("SitUps", 4483362458)
+
+-- Vars
+local PushEnabled = false
+local SitEnabled = false
+local PushSpeed = 1
+local SitSpeed = 1
+
+-- PUSHUPS TOGGLE
+PushTab:CreateToggle({
+    Name = "PushUp Autofarm",
+    CurrentValue = false,
+    Callback = function(Value)
+        PushEnabled = Value
+
+        if PushEnabled then
+            task.spawn(function()
+                while PushEnabled do
+                    local args = {"PushUp"}
+
+                    game:GetService("ReplicatedStorage")
+                        :WaitForChild("Events")
+                        :WaitForChild("Actions")
+                        :FireServer(unpack(args))
+
+                    task.wait(math.clamp(1 / PushSpeed, 0.00001, 2))
+                end
+            end)
+        end
+    end
+})
+
+-- PUSHUPS SLIDER
+PushTab:CreateSlider({
+    Name = "PushUp Speed",
+    Range = {1, 5000},
+    Increment = 1,
+    Suffix = "Speed",
+    CurrentValue = 1,
+    Callback = function(Value)
+        PushSpeed = Value
+    end
+})
+
+-- SITUPS TOGGLE
+SitTab:CreateToggle({
+    Name = "SitUp Autofarm",
+    CurrentValue = false,
+    Callback = function(Value)
+        SitEnabled = Value
+
+        if SitEnabled then
+            task.spawn(function()
+                while SitEnabled do
+                    local args = {"SitUp"}
+
+                    game:GetService("ReplicatedStorage")
+                        :WaitForChild("Events")
+                        :WaitForChild("Actions")
+                        :FireServer(unpack(args))
+
+                    task.wait(math.clamp(1 / SitSpeed, 0.00001, 2))
+                end
+            end)
+        end
+    end
+})
+
+-- SITUPS SLIDER
+SitTab:CreateSlider({
+    Name = "SitUp Speed",
+    Range = {1, 5000},
+    Increment = 1,
+    Suffix = "Speed",
+    CurrentValue = 1,
+    Callback = function(Value)
+        SitSpeed = Value
+    end
+})
